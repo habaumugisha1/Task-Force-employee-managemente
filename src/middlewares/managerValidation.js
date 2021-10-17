@@ -3,7 +3,6 @@ import joi from 'joi'
 const managerSchema = joi.object({
     first_name: joi.string().required(),
     last_name: joi.string().required(),
-    position: joi.string().required(),
     email: joi.string().email().required(),
     password: joi.string().min(6).required(),
     phone: joi.string().length(10).required(),

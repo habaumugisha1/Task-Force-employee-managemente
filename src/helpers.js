@@ -12,6 +12,10 @@ export const comparePassword = (password,userPassword)=>bcrypt.compareSync(passw
 
 export const userExist = async (email) => await model.Users.findOne({where:{email:email}});
 
+export const employeeExist = async (email) => await model.Employees.findOne({where:{email:email}});
+
+export const employeeIdExist = async (nid) => await model.Employees.findOne({where:{national_id:nid}});
+
 export const sendEmail = (userInfo) => {
   sgMail.setApiKey(process.env.SENDGRI_API_KEY);
 
@@ -34,6 +38,7 @@ export const generateToken = (payload, expiresIn = '2d') => {
     const token = jwt.sign({ ...payload }, process.env.SECRET, { expiresIn });
     return token;
   };
+export const verifyToken = (token) => jwt.verify(token, process.env.SECRET);
 
 export const sendVerificationEmail = async (req, res,first_name, email) => {
 

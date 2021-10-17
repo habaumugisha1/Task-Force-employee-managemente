@@ -25,7 +25,7 @@ try{
 
 export const updateRecord = async (req,res) => {
     const {employeeId} = req.params
-    const employee = findEmployeeById(employeeId)
+    const employee = await findEmployeeById(employeeId)
     if(!employee) return res.status(404).json({status:404, message:"Employee does not exist"});
     await models.Employees.update(req.body, {where: {id: employeeId}})
     return res.status(200).json({status:200, message:"Employee updated successful!"})
@@ -35,4 +35,14 @@ export const getAllRecord = async (req,res) => {
 
     const allEmployees = await models.Employees.findAll()
     return res.status(200).json({status:200, message:"Employee retrieved successful!", allEmployees})
+}
+
+
+export const deleteRecord = async (req,res) => {
+    const {employeeId} = req.params
+    const employee = await findEmployeeById(employeeId)
+    console.log(employee)
+    if(!employee) return res.status(404).json({status:404, message:"Employee does not exist"});
+    await models.Employees.destroy({where: {id: employeeId}})
+    return res.status(200).json({status:200, message:"Employee deleted successful!"})
 }

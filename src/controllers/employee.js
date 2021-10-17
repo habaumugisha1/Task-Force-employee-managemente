@@ -46,3 +46,11 @@ export const deleteRecord = async (req,res) => {
     await models.Employees.destroy({where: {id: employeeId}})
     return res.status(200).json({status:200, message:"Employee deleted successful!"})
 }
+
+export const activateEmp = async (req,res) => {
+    const {employeeId} = req.params
+    const employee = await findEmployeeById(employeeId)
+    if(!employee) return res.status(404).json({status:404, message:"Employee does not exist"});
+    await models.Employees.update({status:req.body.status}, {where: {id: employeeId}})
+    return res.status(200).json({status:200, message:"Employee activated successful!"})
+}

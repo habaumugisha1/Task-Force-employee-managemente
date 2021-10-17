@@ -1,5 +1,5 @@
 import models from '../models';
-import {employeeExist,employeeIdExist, findEmployeeById} from "../helpers"
+import {communicateEmployeeEmail, employeeExist,employeeIdExist, findEmployeeById} from "../helpers"
 import {sendVerificationEmail} from "../helpers"
 import { queryEmployee } from '../search';
 
@@ -17,7 +17,7 @@ try{
    if(nationalIdExist) return res.status(409).json({message:"national ID already exist"});
    
    const newEmployee = await models.Employees.create({first_name, last_name, email, code, position, phone,national_id, date_of_birth});
-   await sendVerificationEmail(req, res,first_name, email)
+   await communicateEmployeeEmail(req, res,first_name, email)
    return res.status(201).json({status:201, message: 'Employee created successful!', data: newEmployee})
  } catch (error) {
    return res.status(400).json({status:400, message: error.message});

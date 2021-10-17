@@ -1,5 +1,5 @@
 import models from '../models';
-import {bcryptingPassword, userExist, comparePassword, generateToken} from "../helpers"
+import {bcryptingPassword, userExist, comparePassword, generateToken, verifyToken} from "../helpers"
 import {sendVerificationEmail} from "../helpers"
 
 export const managerSignup = async (req, res) => {
@@ -41,4 +41,14 @@ export const managerLogin = async (req, res) => {
   } catch (error) {
     return res.status(400).json({message: error.message, stack: error.stack});
   }
+}
+
+export const confirmEmail = async (req, res)  =>{
+  const {token} = req.query;
+  const userEmail = await verifyToken(token);
+  const isExist = await userExist(userEmail.email)
+
+  const activateManager = models.Users.update({status:"ACTIVE"},{where:{email:isExist.email}});
+  return res.status(200).json({statua:200, message:"account confirmed successful"})
+
 }

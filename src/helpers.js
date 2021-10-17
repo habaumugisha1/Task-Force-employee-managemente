@@ -49,7 +49,19 @@ export const sendVerificationEmail = async (req, res,first_name, email) => {
     const userInfo = {
       email,
       subject: 'Verify your account',
-      html: `<h2>Hello ${first_name},</h2><p>Welcome to Employees Management, Click on the link below to verify your account.</p> <br> <a href='localhost:3200/api/v1/user/verification?token=${token}'>Verify</a>`
+      html: `<h2>Hello ${first_name},</h2><p>Welcome to Employees Management, Click on the link below to verify your account.</p> <br><a href='http://localhost:3200/api/v1/user/verification?token=${token}'>Verify</a><br> or click here<br> http://localhost:3200/api/v1/user/verification?token=${token}`
+    };
+  
+    const sendmail = await sendEmail(userInfo);
+    return sendmail;
+  };
+
+  export const communicateEmployeeEmail = async (req, res,first_name, email) => {
+  
+    const userInfo = {
+      email,
+      subject: 'Joining company',
+      html: `<h2>Hello ${first_name},</h2><p>Welcome to Employees Management, Thank you for joinig Our company`
     };
   
     const sendmail = await sendEmail(userInfo);

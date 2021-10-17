@@ -6,6 +6,10 @@ import 'dotenv/config'
 
 export const bcryptingPassword = (password) => bcrypt.hashSync(password, 10);
 
+export const comparePassword = (password,userPassword)=>bcrypt.compareSync(password, userPassword);
+
+
+
 export const userExist = async (email) => await model.Users.findOne({where:{email:email}});
 
 export const sendEmail = (userInfo) => {

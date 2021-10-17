@@ -1,6 +1,7 @@
 import models from '../models';
 import {employeeExist,employeeIdExist, findEmployeeById} from "../helpers"
 import {sendVerificationEmail} from "../helpers"
+import { queryEmployee } from '../search';
 
 export const createNewEmployee = async (req, res) => {
 const {first_name, last_name, email, date_of_birth, position, phone, national_id} = req.body;
@@ -53,4 +54,10 @@ export const activateEmp = async (req,res) => {
     if(!employee) return res.status(404).json({status:404, message:"Employee does not exist"});
     await models.Employees.update({status:req.body.status}, {where: {id: employeeId}})
     return res.status(200).json({status:200, message:"Employee activated successful!"})
+}
+export const searchRecord = async (req,res) => {
+    const { position, email, phone, code } = req.query;
+    const employee = await queryEmployee(req, res, {position, email, phone, code})
+    
+    return res.status(200).json({status:200, message:"Employee retrieved successful!", employee})
 }

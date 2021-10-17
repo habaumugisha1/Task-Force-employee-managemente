@@ -14,6 +14,8 @@ export const userExist = async (email) => await model.Users.findOne({where:{emai
 
 export const employeeExist = async (email) => await model.Employees.findOne({where:{email:email}});
 
+export const findEmployeeById = async (employeeId) => await model.Employees.findOne({where:{id:employeeId}});
+
 export const employeeIdExist = async (nid) => await model.Employees.findOne({where:{national_id:nid}});
 
 export const sendEmail = (userInfo) => {

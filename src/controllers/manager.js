@@ -1,6 +1,7 @@
 import models from '../models';
-import {bcryptingPassword, userExist} from "../helpers"
+import {bcryptingPassword, userExist, comparePassword, generateToken} from "../helpers"
 import {sendVerificationEmail} from "../helpers"
+
 export const managerSignup = async (req, res) => {
 const {first_name, last_name, email, password,date_of_birth, phone,national_id} = req.body;
 
@@ -15,6 +16,28 @@ try{
    await sendVerificationEmail(req, res,first_name, email)
    return res.status(201).json({status:201, message: `sign up successful! verify your email ${email} to activate your account`, data: newManager})
  } catch (error) {
-   return res.status(400).json({message: error.message, stack: error.stack});
+   return res.status(400).json({status:400, message: error.message});
  }
+}
+
+export const managerLogin = async (req, res) => {
+  const{email, password } = req.body;
+
+  try {
+    // check if user is exist in database
+    const isUserExist = await userExist(email);
+    if (!isUserExist) return res.status(404).json({status:404, message:`You don't have account with this email ${email}!`});
+    const comparedPassword = comparePassword(password, isUserExist.password);
+  
+    if(!comparedPassword) return res.status(400).json({status:400, message:"Password incorrect!"}) 
+    const tokenPayload = {email:isUserExist.email, position:isUserExist.position};
+
+    // generate manager token
+    const token = generateToken(tokenPayload)
+
+    return res.status(200).json({status:200, message:"Login successful", token})
+    
+  } catch (error) {
+    return res.status(400).json({message: error.message, stack: error.stack});
+  }
 }

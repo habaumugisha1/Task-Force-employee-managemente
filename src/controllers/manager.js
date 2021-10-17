@@ -27,6 +27,7 @@ export const managerLogin = async (req, res) => {
     // check if user is exist in database
     const isUserExist = await userExist(email);
     if (!isUserExist) return res.status(404).json({status:404, message:`You don't have account with this email ${email}!`});
+    if(isUserExist.status !=="ACTIVE") return res.status(400).json({status:400, message:`You account is not activated!`});
     const comparedPassword = comparePassword(password, isUserExist.password);
   
     if(!comparedPassword) return res.status(400).json({status:400, message:"Password incorrect!"}) 

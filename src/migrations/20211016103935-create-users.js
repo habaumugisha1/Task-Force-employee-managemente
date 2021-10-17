@@ -31,7 +31,8 @@ module.exports = {
       },
       position: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'Manager'
       },
       
       status: {
